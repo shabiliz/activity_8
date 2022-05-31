@@ -1,0 +1,47 @@
+#define THRESHOLD 45
+#define NEAR 50
+int move_time, turn_time;
+
+task main()
+
+{
+
+ SetSensorLight(IN_2);
+ SetSensorLowspeed(IN_3);
+ OnFwd(OUT_BC, 100);
+
+ while (true)
+
+ {
+
+ move_time = Random(600);
+ turn_time = Random(720);
+
+ if (Sensor(IN_2) < THRESHOLD )
+
+ {
+
+ Off(OUT_BC);
+ RotateMotor(OUT_BC,90,-90);
+ Wait(turn_time);
+ RotateMotorEx( OUT_BC, 50, turn_time,100, true, true);
+
+ }
+
+ if (Sensor(IN_2) > THRESHOLD && SensorUS(IN_3) > NEAR )
+
+ {
+ Off(OUT_BC);
+ Wait(1000);
+ OnFwd(OUT_B, -40);
+ OnFwd(OUT_C, 40);
+ until(SensorUS(IN_3) < NEAR );
+ OnFwd(OUT_BC, 100);
+
+ }
+ OnFwd(OUT_BC, 100);
+
+ }
+
+
+}
